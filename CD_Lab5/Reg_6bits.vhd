@@ -21,7 +21,7 @@ U: FlipFlop6b PORT MAP(D6 => D, clk_comp => clk_R, Q6 => Qn);
 
 PROCESS(clk_R, ld, Qn)
 	BEGIN
-		IF(ld = '1') THEN 
+		IF(ld'EVENT AND ld = '1') THEN 
 			Q <= Qn;
 		END IF;
 END PROCESS;
