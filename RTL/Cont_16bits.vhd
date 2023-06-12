@@ -6,7 +6,7 @@ ENTITY contadorCres IS
 		clk: IN BIT; --entrada de clock
 		reset: IN BIT;
 		tc: IN BIT;
-		Q: OUT INTEGER RANGE 65535 DOWNTO 0); --saída de dados
+		C: OUT INTEGER RANGE 65535 DOWNTO 0); --saída de dados
 END contadorCres;
 
 ARCHITECTURE behav OF contadorCres IS
@@ -22,6 +22,6 @@ ARCHITECTURE behav OF contadorCres IS
 					qv := qv+1;
 				END IF;
 			END IF;
-			Q <= qv;
+			C <= qv;
 	END PROCESS;
 END;
