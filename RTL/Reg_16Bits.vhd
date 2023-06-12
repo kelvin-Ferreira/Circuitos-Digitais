@@ -1,0 +1,25 @@
+ENTITY Reg16b IS
+	PORT(clk_R, ld: IN BIT;
+		D: IN BIT_VECTOR(15 DOWNTO 0);
+		Q: OUT BIT_VECTOR(15 DOWNTO 0));
+END;
+
+ARCHITECTURE behav OF Reg16b IS
+
+SIGNAL Qn: BIT_VECTOR(5 DOWNTO 0);
+
+COMPONENT FlipFlop16b is
+	PORT(clk_comp: IN BIT;
+			D16: IN BIT_VECTOR(15 DOWNTO 0);
+			Q16: OUT BIT_VECTOR(15 DOWNTO 0));
+END COMPONENT;
+BEGIN
+U: FlipFlop16b PORT MAP(D16 => D, clk_comp => clk_R, Q16 => Qn); 
+
+PROCESS(clk_R, ld, Qn)
+	BEGIN
+		IF(clk_R'EVENT AND clk_R = '1' AND ld = '1') THEN 
+			Q <= Qn;
+		END IF;
+END PROCESS;
+END behav;
