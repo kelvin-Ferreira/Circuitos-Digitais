@@ -1,20 +1,25 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 ENTITY comp16b IS
-    PORT( An : IN BIT_VECTOR(15 DOWNTO 0);
-		Bn : IN BIT_VECTOR(15 DOWNTO 0);
-      P: OUT BIT);
+    PORT( clkcp : IN BIT;
+			 An : IN std_logic_vector(15 DOWNTO 0);
+          Bn : IN std_logic_vector(15 DOWNTO 0);
+          Pn : OUT BIT
+    );
 END;
 
 architecture Behav of Comp16b is
 begin
-    process(An, Bn)
+    process(An, Bn, clkcp)
     begin
-        if An = Bn then
-            P <= '1';
-        else
-            P <= '0';
-        end if;
+        IF(clkcp'EVENT AND clkcp = '1' ) THEN
+			if An = Bn then
+            Pn <= '1';
+			else
+            Pn <= '0';
+			end if;
+		  end if;
     end process;
 end architecture Behav;
