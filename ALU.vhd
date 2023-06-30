@@ -6,7 +6,7 @@ use ieee.std_logic_1164.all;
 
 ENTITY ALU IS
 
-    PORT(clk, e, x, y, z, cin: IN BIT;
+    PORT(clk, e, xn, yn, zn, cin: IN BIT;
 
 	 An: IN BIT_VECTOR(5 DOWNTO 0); 
 
@@ -20,6 +20,7 @@ END;
 
 ARCHITECTURE behav OF ALU IS
 
+    CONSTANT M : BIT := '0';
     SIGNAL Z0 : BIT;
     SIGNAL Z1 :BIT_VECTOR(5 DOWNTO 0);
     SIGNAL Z2 :BIT_VECTOR(5 DOWNTO 0);
@@ -60,16 +61,8 @@ ARCHITECTURE behav OF ALU IS
 
 BEGIN
 
-	U1: Sum6b PORT MAP(A5 => A(5), A4 => A(4), A3 => A(3), A2 => A(2),
-
-			   A1 => A(1), A0 => A(0), B5 => B(5), B4 => B(4),
-
-			   B3 => B(3), B2 => B(2), B1 => B(1), B0 => B(0), 
-
-			   sub => func, S5 => Z(5), S4 => Z(4), S3 => Z(3),
-
-			   S2 => Z(2), S1 => Z(1), S0 => Z(0));
-
-	U2: reg6b PORT MAP(clk_R => clk, ld => e, D => Z, Q => S);
+	U1: AL PORT MAP(x => xn, y => yn, z => zn, A => An, B => Bn, Icin => cin, IA => Z1, IB => Z2);
+	U2: Sum6b PORT MAP(A6 => Z1, B6 => Z2, sub => M, S6 => Z3);
+	U3: reg6b PORT MAP(clk_R => clk, ld => e, D => Z3, Q => S);
 
 END;
