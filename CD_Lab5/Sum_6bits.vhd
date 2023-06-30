@@ -9,7 +9,8 @@ ENTITY Sum6b IS
 END;
 
 ARCHITECTURE behav OF Sum6b IS
-	 SIGNAL coa : BIT_VECTOR(5 DOWNTO 0);
+    CONSTANT M : BIT := '0'; 
+    SIGNAL coa : BIT_VECTOR(5 DOWNTO 0);
     SIGNAL Ba : BIT_VECTOR(5 DOWNTO 0);
 	 
     COMPONENT Mux2x1_6bits IS
@@ -26,7 +27,7 @@ ARCHITECTURE behav OF Sum6b IS
 
 BEGIN
     
-	U0: Mux2x1_6bits PORT MAP(sc0 => sub ,Ac => B6, Bc => NOT(B6), d => Ba);
+	U0: Mux2x1_6bits PORT MAP(sc0 => M ,Ac => B6, Bc => NOT(B6), d => Ba);
 	U1: Sum PORT MAP(A => A6(0), B => Ba(0), ci => sub, co => coa(0), S => S6(0));
 	U2: Sum PORT MAP(A => A6(1), B => Ba(1), ci => coa(0), co => coa(1), S => S6(1));
 	U3: Sum PORT MAP(A => A6(2), B => Ba(2), ci => coa(1), co => coa(2), S => S6(2));
