@@ -2,17 +2,21 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 ENTITY Sum6b IS
-    PORT(A5, A4, A3, A2, A1, A0, B5, B4, B3, B2, B1, B0, sub : IN BIT; 
-        S5, S4, S3, S2, S1, S0 : OUT BIT);
+    PORT(sub : IN BIT; 
+		A6 : IN BIT_VECTOR(5 DOWNTO 0);
+		B6 : IN BIT_VECTOR(5 DOWNTO 0);
+      S6: OUT BIT_VECTOR(5 DOWNTO 0));
 END;
 
 ARCHITECTURE behav OF Sum6b IS
-	 SIGNAL co5, co4, co3, co2, co1, co0: BIT;
-    SIGNAL Ba5, Ba4, Ba3, Ba2, Ba1, Ba0: BIT;
+	 SIGNAL coa : BIT_VECTOR(5 DOWNTO 0);
+    SIGNAL Ba : BIT_VECTOR(5 DOWNTO 0);
 	 
     COMPONENT Mux2x1_6bits IS
-        PORT(Bc0, Bc1, Bc2, Bc3, Bc4, Bc5, Sc0 : IN BIT; 
-    d0, d1, d2, d3, d4, d5 : OUT BIT);
+        PORT(sc0 : IN BIT;
+			Ac : IN BIT_VECTOR(5 DOWNTO 0);
+			Bc : IN BIT_VECTOR; 
+			d : OUT BIT_VECTOR(5 DOWNTO 0));
     END COMPONENT;
 
     COMPONENT Sum is
@@ -22,13 +26,12 @@ ARCHITECTURE behav OF Sum6b IS
 
 BEGIN
     
-    U0: Mux2x1_6bits PORT MAP(Bc0 => B0, Bc1 => B1, Bc2 => B2, Bc3 => B3,
-        Bc4 => B4, Bc5 => B5, Sc0 => sub, d0 => Ba0, d1 => Ba1, d2 => Ba2,
-        d3 => Ba3, d4 => Ba4, d5 => Ba5); 
-    U6: Sum PORT MAP(A => A5, B => Ba5, ci => co4, co => co5, S => S5); 
-	 U5: Sum PORT MAP(A => A4, B => Ba4, ci => co3, co => co4, S => S4); 
-	 U4: Sum PORT MAP(A => A3, B => Ba3, ci => co2, co => co3, S => S3); 
-	 U3: Sum PORT MAP(A => A2, B => Ba2, ci => co1, co => co2, S => S2); 
-	 U2: Sum PORT MAP(A => A1, B => Ba1, ci => co0, co => co1, S => S1); 
-	 U1: Sum PORT MAP(A => A0, B => Ba0, ci => sub, co => co0, S => S0);
+	U0: Mux2x1_6bits PORT MAP(sc0 => sub ,Ac => B6, Bc => NOT(B6), d => Ba);
+	U1: Sum PORT MAP(A => A6(0), B => Ba(0), ci => sub, co => coa(0), S => S6(0));
+	U2: Sum PORT MAP(A => A6(1), B => Ba(1), ci => coa(0), co => coa(1), S => S6(1));
+	U3: Sum PORT MAP(A => A6(2), B => Ba(2), ci => coa(1), co => coa(2), S => S6(2));
+	U4: Sum PORT MAP(A => A6(3), B => Ba(3), ci => coa(2), co => coa(3), S => S6(3));
+	U5: Sum PORT MAP(A => A6(4), B => Ba(4), ci => coa(3), co => coa(4), S => S6(4));
+	U6: Sum PORT MAP(A => A6(5), B => Ba(5), ci => coa(4), co => coa(5), S => S6(5));
+
 END;
