@@ -21,7 +21,7 @@ architecture Behav OF Reg16x16 is
     type reg_array is array (0 to 15) of STD_LOGIC_VECTOR(15 downto 0);
     signal REG : reg_array;
 
-    -- Additional signals for storing read data
+
     signal read_data_Rp : STD_LOGIC_VECTOR(15 downto 0);
     signal read_data_Rq : STD_LOGIC_VECTOR(15 downto 0);
 
@@ -35,16 +35,16 @@ begin
             end if;
 
             if Rp_rd = '1' then
-                -- Store the read data to the temporary signal
+                
                 read_data_Rp <= REG(TO_INTEGER(unsigned(Rp_addr)));
-                -- Assign read data to DATA1_OUT
+                
                 DATA1_OUT <= read_data_Rp;
             end if;
 
             if Rq_rd = '1' then
-                -- Store the read data to the temporary signal
+                
                 read_data_Rq <= REG(TO_INTEGER(unsigned(Rq_addr)));
-                -- Assign read data to DATA2_OUT
+                
                 DATA2_OUT <= read_data_Rq;
             end if;
         end if;
